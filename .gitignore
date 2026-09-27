@@ -2,3 +2,5 @@ myenv
 ore.ipynb
 .ipynb_checkpoints
 ore-checkpoint.ipynb
+__pycache__/
+*.pyc

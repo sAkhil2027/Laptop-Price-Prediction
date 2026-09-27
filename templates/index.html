@@ -2,72 +2,158 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laptop Price Predictor</title>
 
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(120deg, #1e3c72, #2a5298);
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        .container {
-            width: 450px;
-            margin: 50px auto;
-            background: #ffffff;
-            padding: 25px 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
             color: #333;
         }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 12px;
-            color: #555;
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background: #ffffff;
+            padding: 35px 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
         }
 
-        select, input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 6px;
+        }
+
+        .header p {
             font-size: 14px;
+            color: #6c7a89;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #34495e;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1.5px solid #dcdfe6;
+            background-color: #f8fafc;
+            font-size: 14px;
+            color: #2c3e50;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.15);
+            background-color: #fff;
         }
 
         button {
             width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            background: #2a5298;
-            color: white;
+            margin-top: 24px;
+            padding: 13px;
+            background: linear-gradient(135deg, #1d8cf8, #3358f4);
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(29, 140, 248, 0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
         }
 
         button:hover {
-            background: #1e3c72;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(29, 140, 248, 0.45);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f5e9;
-            border-radius: 5px;
+            margin-top: 22px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 5px solid #2e7d32;
+            border-radius: 8px;
             text-align: center;
-            font-size: 18px;
-            color: #2e7d32;
-            font-weight: bold;
+            font-size: 20px;
+            color: #1b5e20;
+            font-weight: 700;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .error-alert {
+            margin-top: 20px;
+            padding: 14px 18px;
+            background: #ffebee;
+            border-left: 5px solid #c62828;
+            border-radius: 8px;
+            color: #b71c1c;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 580px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .container {
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
@@ -75,89 +161,188 @@
 <body>
 
 <div class="container">
-    <h1>Laptop Price Predictor</h1>
+    <div class="header">
+        <h1>Laptop Price Predictor</h1>
+        <p>Select verified specifications from the dataset to estimate price</p>
+    </div>
 
     <form method="POST">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Brand</label>
+                <select name="company" id="company-select">
+                    {% for c in companies %}
+                    <option value="{{ c }}" {% if selected.get('company') == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Brand</label>
-        <select name="company">
-            {% for c in companies %}
-            <option value="{{ c }}">{{ c }}</option>
-            {% endfor %}
-        </select>
+            <div class="form-group">
+                <label>Type</label>
+                <select name="type">
+                    {% for t in types %}
+                    <option value="{{ t }}" {% if selected.get('type') == t %}selected{% endif %}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Type</label>
-        <select name="type">
-            {% for t in types %}
-            <option value="{{ t }}">{{ t }}</option>
-            {% endfor %}
-        </select>
+            <div class="form-group">
+                <label>RAM</label>
+                <select name="ram">
+                    {% for r in rams %}
+                    <option value="{{ r }}" {% if selected.get('ram') == r or (not selected and r == 8) %}selected{% endif %}>{{ r }} GB</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>RAM (GB)</label>
-        <input type="number" name="ram" required>
+            <div class="form-group">
+                <label>Weight</label>
+                <select name="weight">
+                    <option value="auto" {% if selected.get('weight') == 'auto' or not selected %}selected{% endif %}>Not Sure / Standard (~1.8 kg)</option>
+                    {% for w in weights %}
+                    <option value="{{ w }}" {% if selected.get('weight') == w|string %}selected{% endif %}>{{ w }} kg</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Weight (kg)</label>
-        <input type="number" step="0.1" name="weight" required>
+            <div class="form-group">
+                <label>Touchscreen</label>
+                <select name="touchscreen">
+                    <option value="No" {% if selected.get('touchscreen') == 'No' or not selected %}selected{% endif %}>No (Standard)</option>
+                    <option value="Yes" {% if selected.get('touchscreen') == 'Yes' %}selected{% endif %}>Yes</option>
+                </select>
+            </div>
 
-        <label>Touchscreen</label>
-        <select name="touchscreen">
-            <option>No</option>
-            <option>Yes</option>
-        </select>
+            <div class="form-group">
+                <label>IPS Display</label>
+                <select name="ips">
+                    <option value="No" {% if selected.get('ips') == 'No' or not selected %}selected{% endif %}>No / Not Sure (Standard)</option>
+                    <option value="Yes" {% if selected.get('ips') == 'Yes' %}selected{% endif %}>Yes</option>
+                </select>
+            </div>
 
-        <label>IPS Display</label>
-        <select name="ips">
-            <option>No</option>
-            <option>Yes</option>
-        </select>
+            <div class="form-group">
+                <label>Screen Size</label>
+                <select name="screen_size">
+                    {% for s in screen_sizes %}
+                    <option value="{{ s }}" {% if selected.get('screen_size') == s or (not selected and s == 15.6) %}selected{% endif %}>{{ s }} inches</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Screen Size (inches)</label>
-        <input type="number" step="0.1" name="screen_size" required>
+            <div class="form-group">
+                <label>Resolution</label>
+                <select name="resolution">
+                    <option value="auto" {% if selected.get('resolution') == 'auto' or not selected %}selected{% endif %}>Not Sure / Standard (1920x1080 Full HD)</option>
+                    {% for res in resolutions %}
+                    <option value="{{ res }}" {% if selected.get('resolution') == res %}selected{% endif %}>{{ res }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Resolution</label>
-        <select name="resolution">
-            <option>1920x1080</option>
-            <option>1366x768</option>
-            <option>2560x1440</option>
-            <option>3840x2160</option>
-        </select>
+            <div class="form-group full-width">
+                <label>CPU</label>
+                <select name="cpu">
+                    {% for c in cpus %}
+                    <option value="{{ c }}" {% if selected.get('cpu') == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>CPU</label>
-        <select name="cpu">
-            {% for c in cpus %}
-            <option value="{{ c }}">{{ c }}</option>
-            {% endfor %}
-        </select>
+            <div class="form-group">
+                <label>HDD Storage</label>
+                <select name="hdd">
+                    <option value="0" {% if selected.get('hdd') == '0' or not selected %}selected{% endif %}>0 GB (No HDD / Not Sure)</option>
+                    {% for h in hdds %}
+                    {% if h != 0 %}
+                    <option value="{{ h }}" {% if selected.get('hdd') == h|string %}selected{% endif %}>{{ h }} GB</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>HDD (GB)</label>
-        <input type="number" name="hdd">
+            <div class="form-group">
+                <label>SSD Storage</label>
+                <select name="ssd">
+                    {% for s in ssds %}
+                    <option value="{{ s }}" {% if selected.get('ssd') == s|string or (not selected and s == 256) %}selected{% endif %}>{{ s }} GB {% if s == 256 %}(Standard / Recommended){% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>SSD (GB)</label>
-        <input type="number" name="ssd">
+            <div class="form-group">
+                <label>GPU</label>
+                <select name="gpu">
+                    {% for g in gpus %}
+                    <option value="{{ g }}" {% if selected.get('gpu') == g %}selected{% endif %}>{{ g }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>GPU</label>
-        <select name="gpu">
-            {% for g in gpus %}
-            <option value="{{ g }}">{{ g }}</option>
-            {% endfor %}
-        </select>
+            <div class="form-group">
+                <label>Operating System</label>
+                <select name="os" id="os-select">
+                    {% for o in oss %}
+                    <option value="{{ o }}" {% if selected.get('os') == o %}selected{% endif %}>{{ o }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
 
-        <label>Operating System</label>
-        <select name="os">
-            {% for o in oss %}
-            <option value="{{ o }}">{{ o }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Predict Price</button>
+        <button type="submit">Predict Estimated Price</button>
     </form>
 
-    {% if price %}
+    {% if error_msg %}
+    <div class="error-alert">
+        {{ error_msg }}
+    </div>
+    {% endif %}
+
+    {% if price is not none and price > 0 %}
     <div class="result">
-        Predicted Price: ₹ {{ price }}
+        Estimated Price: ₹ {{ "{:,}".format(price) }}
     </div>
     {% endif %}
 </div>
+
+<script>
+    const brandOsMap = {{ brand_os_map | tojson }};
+    const companySelect = document.getElementById('company-select');
+    const osSelect = document.getElementById('os-select');
+    let currentSelectedOs = "{{ selected.get('os', '') }}";
+
+    function updateOsOptions() {
+        const brand = companySelect.value;
+        const validOss = brandOsMap[brand] || Object.values(brandOsMap).flat();
+
+        const previousVal = osSelect.value || currentSelectedOs;
+        osSelect.innerHTML = '';
+
+        let matched = false;
+        validOss.forEach(os => {
+            const opt = document.createElement('option');
+            opt.value = os;
+            opt.textContent = os;
+            if (os === previousVal) {
+                opt.selected = true;
+                matched = true;
+            }
+            osSelect.appendChild(opt);
+        });
+
+        if (!matched && validOss.length > 0) {
+            osSelect.options[0].selected = true;
+        }
+    }
+
+    companySelect.addEventListener('change', () => {
+        currentSelectedOs = '';
+        updateOsOptions();
+    });
+
+    // Run on initial page load
+    updateOsOptions();
+</script>
 
 </body>
 </html>
