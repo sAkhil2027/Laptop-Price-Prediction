@@ -1,12 +1,12 @@
-# 💻 Laptop Price Predictor (End-to-End Machine Learning Web App)
+# 💻 Laptop Price Predictor & Machine Learning Web App
 
-An end-to-end Machine Learning web application built with **Flask**, **Scikit-Learn**, and **Python** to estimate laptop market prices based on hardware specifications, display quality, and operating systems.
+An end-to-end Machine Learning project and web application built with **Flask**, **Scikit-Learn**, **Pandas**, and **Python** to estimate laptop market prices based on hardware specifications, display quality, and operating systems.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Highlights & Features
 
-* **Intelligent Price Estimation**: Powered by a trained Scikit-Learn regression pipeline trained on comprehensive laptop market data.
+* **Intelligent Price Estimation**: Powered by a trained Scikit-Learn **Random Forest Regressor** pipeline trained on comprehensive laptop market data.
 * **100% Dataset-Driven Dropdowns**: All input fields (RAM, Storage, Weight, Screen Size, Resolution, etc.) are restricted to verified dataset values, preventing invalid inputs, negative numbers, or server crashes.
 * **Dynamic Dependent Filtering**: Interactive frontend logic automatically links Brand to valid Operating Systems (e.g., selecting **Apple** dynamically locks the OS to **Mac**, while selecting PC brands displays Windows/Linux).
 * **Smart "Not Sure / Standard" Auto-Defaults**: Everyday non-technical users who don't know their exact laptop weight or resolution can pick *"Not Sure / Standard"*, and the backend will automatically map to the median values for that laptop category.
@@ -18,9 +18,15 @@ An end-to-end Machine Learning web application built with **Flask**, **Scikit-Le
 
 ## 🛠️ Technology Stack
 
-* **Backend**: Python 3.11, Flask
-* **Machine Learning & Data**: Scikit-Learn, Pandas, NumPy, Pickle
-* **Frontend**: HTML5, Vanilla CSS3 (Custom Responsive Grid), JavaScript (Dynamic Form Validation)
+| Technology | Purpose |
+| :--- | :--- |
+| **Python 3.11** | Core Programming Language |
+| **Flask** | Web Application & Routing Framework |
+| **Scikit-Learn** | Machine Learning Modeling & Pipelines |
+| **Pandas & NumPy** | Data Manipulation & Numerical Processing |
+| **Matplotlib & Seaborn** | Exploratory Data Analysis (EDA) |
+| **HTML5 & Vanilla CSS3** | Modern Responsive UI & Animations |
+| **Vanilla JavaScript** | Dynamic Form Validation & Client-Side Filtering |
 
 ---
 
@@ -28,7 +34,7 @@ An end-to-end Machine Learning web application built with **Flask**, **Scikit-Le
 
 ```
 Laptop-Price-Prediction/
-├── app.py                           # Flask application, routing & ML inference logic
+├── app.py                           # Flask web application & ML inference logic
 ├── templates/
 │   └── index.html                   # Responsive frontend interface & dynamic JS
 ├── pipe.pkl                         # Serialized Scikit-Learn ML pipeline
@@ -37,6 +43,29 @@ Laptop-Price-Prediction/
 ├── requirements.txt                 # Project dependencies
 ├── TESTING_AND_DEPLOYMENT_GUIDE.md  # Complete test cases & cloud deployment guide
 └── README.md                        # Project documentation
+```
+
+---
+
+## 🔄 Machine Learning Pipeline & Architecture
+
+```
+Laptop Specifications (Form Input)
+         │
+         ▼
+Feature Engineering & PPI Calculation
+         │
+         ▼
+Column Transformer (One-Hot Encoding)
+         │
+         ▼
+Random Forest Regressor
+         │
+         ▼
+Inverse Log Transformation: exp(y_pred)
+         │
+         ▼
+Predicted Laptop Price (₹)
 ```
 
 ---
@@ -65,7 +94,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Run the Application
+### 4. Run the Web Application
 ```bash
 python app.py
 ```
@@ -82,5 +111,8 @@ A complete pre-deployment test suite with boundary checks, extreme value tests, 
 
 ---
 
-## 👤 Author
-* **Akhil** - [sAkhil2027](https://github.com/sAkhil2027)
+## 👨‍💻 Author
+
+**Akhil Vikram Singh** - [sAkhil2027](https://github.com/sAkhil2027)
+
+If you find this project useful, feel free to give it a ⭐ on GitHub!
